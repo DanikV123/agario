@@ -1,37 +1,52 @@
-import random, math, turtle
+import math, turtle, time
+from turtle import Turtle, Screen
+import random as rnd
 
+loss = turtle.Turtle()
+loss.penup()
+loss.hideturtle()
+loss.speed(100)
+loss.goto(0,300)
 
-def random_color():
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+def rnd_color():
+    r = rnd.randint(0, 255)
+    g = rnd.randint(0, 255)
+    b = rnd.randint(0, 255)
     return(r, g, b)
 
 
-def random_values():
-    x = random.randint(-screen_width + max_ball_r, screen_width - max_ball_r)
-    y = random.randint(-screen_height + max_ball_r, screen_height - max_ball_r)
+def rnd_values(screen_width, screen_height):
+    min_ball_r = 10
+    max_ball_r = 100
 
-    dx = random.randint(min_ball_dx, max_ball_dx)
+    min_ball_dx = -5
+    max_ball_dx = 5
+
+    min_ball_dy = -5
+    max_ball_dy = 5
+
+    x = rnd.randint(-screen_width + max_ball_r, screen_width - max_ball_r)
+    y = rnd.randint(-screen_height + max_ball_r, screen_height - max_ball_r)
+
+    dx = rnd.randint(min_ball_dx, max_ball_dx)
     while(dx == 0):
-        dx = random.randint(min_ball_dx, max_ball_dx)
+        dx = rnd.randint(min_ball_dx, max_ball_dx)
 
-    dy = random.randint(min_ball_dy, max_ball_dy)
+    dy = rnd.randint(min_ball_dy, max_ball_dy)
     while(dy == 0):
-        dy = random.randint(min_ball_dy, max_ball_dy)
+        dy = rnd.randint(min_ball_dy, max_ball_dy)
 
-    r = random.randint(min_ball_r, max_ball_r)
+    r = rnd.randint(min_ball_r, max_ball_r)
     while(r == 0):
-         r = random.randint(min_ball_r, max_ball_r)
+         r = rnd.randint(min_ball_r, max_ball_r)
 
-    color = random_color()
+    color = rnd_color()
     return([x, y, dx, dy, r, color])
 
 
-def move_all_balls(screen_width, screen_height):
+def move_all_balls(screen_width, screen_height, BALLS):
     for i in BALLS:
         i.move(screen_width, screen_height)
-
 
 def check_collision(ball1, ball2):
     if(ball1 == ball2):
@@ -45,13 +60,12 @@ def check_collision(ball1, ball2):
 
     centers = math.sqrt(math.pow((x2-x1), 2) + math.pow((y2-y1), 2))
 
-    if(radii > centers):
+    if(radii >= centers):
         return(True)
     else:
         return(False)
 
-
-def check_all_balls_collision():
+def check_all_balls_collision(BALLS, my_ball, screen_width, screen_height):
     all_balls=[]
     all_balls.append(my_ball)
     
@@ -64,27 +78,37 @@ def check_all_balls_collision():
                 r_a = ball_a.r
                 r_b = ball_b.r
                 
-                ran = random_values()
+                ran = rnd_values(screen_width, screen_height)
                 
                 if(r_a > r_b):
                     if(ball_b == my_ball):
-                        #running = False
-                        exit()
+                        loss.write("YOU DIED" , font=("fantasy",60,"normal"), align="center")
+                        time.sleep(5)
+                        quit()
                     ball_b.new_Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
-                    ball_a.r = r_a + 1
+                    ball_a.r = r_a + r_b/50
+                    ball_a.shapesize(ball_a.r/10)
+                    print(ball_a.r)
                 else:
                     if(ball_a == my_ball):
-                        #running = False
-                        exit()
+                        loss.write("YOU DIED" , font=("fantasy",60,"normal"), align="center")
+                        time.sleep(5)
+                        quit()
                     ball_a.new_Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
-                    ball_b.r = r_b + 1
+                    ball_b.r = r_b + r_a/50
+                    ball_b.shapesize(ball_b.r/10)
+                    print(ball_b.r)
 
-
-def movearound():
+def movearound(screen_height, screen_width, my_ball):
     my_ball_x = turtle.getcanvas().winfo_pointerx() - screen_width
     my_ball_y = screen_height - turtle.getcanvas().winfo_pointery()
 
-    my_ball.goto(my_ball_x, my_ball_y)
+    right_side_ball = my_ball_x + my_ball.r
+    left_side_ball = my_ball_x - my_ball.r
+    up_side_ball = my_ball_y + my_ball.r
+    down_side_ball = my_ball_y - my_ball.r
+
+    if (right_side_ball < screen_width and left_side_ball > -screen_width and up_side_ball < screen_height and down_side_ball > -screen_height):
+        my_ball.goto(my_ball_x, my_ball_y)
 
     Screen().update()
-
