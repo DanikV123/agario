@@ -48,6 +48,7 @@ def move_all_balls(screen_width, screen_height, BALLS):
     for i in BALLS:
         i.move(screen_width, screen_height)
 
+
 def check_collision(ball1, ball2):
     if(ball1 == ball2):
        return False
@@ -64,6 +65,7 @@ def check_collision(ball1, ball2):
         return(True)
     else:
         return(False)
+
 
 def check_all_balls_collision(BALLS, my_ball, screen_width, screen_height):
     all_balls=[]
@@ -99,6 +101,7 @@ def check_all_balls_collision(BALLS, my_ball, screen_width, screen_height):
                     ball_b.shapesize(ball_b.r/10)
                     print(ball_b.r)
 
+
 def movearound(screen_height, screen_width, my_ball):
     my_ball_x = turtle.getcanvas().winfo_pointerx() - screen_width
     my_ball_y = screen_height - turtle.getcanvas().winfo_pointery()
@@ -112,3 +115,4 @@ def movearound(screen_height, screen_width, my_ball):
         my_ball.goto(my_ball_x, my_ball_y)
 
     Screen().update()
+    
