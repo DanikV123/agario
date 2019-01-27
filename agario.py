@@ -20,62 +20,56 @@ button.penup()
 button.goto(0, 0)
 button.pendown()
 
-while(pressed):
-    if(pressed):
-        screen_width = (int)(turtle.getcanvas().winfo_width()/2)
-        screen_height = (int)(turtle.getcanvas().winfo_height()/2)
 
-        num_of_balls = 3
+screen_width = (int)(turtle.getcanvas().winfo_width()/2)
+screen_height = (int)(turtle.getcanvas().winfo_height()/2)
 
-        BALLS = []
+num_of_balls = 3
 
-        ran = rnd_values(screen_width, screen_height)
-        my_ball = Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
+BALLS = []
 
-        for i in range(num_of_balls):
-            all_balls=[]
-            all_balls.append(my_ball)
+ran = rnd_values(screen_width, screen_height)
+my_ball = Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
+
+for i in range(num_of_balls):
+    all_balls=[]
+    all_balls.append(my_ball)
             
-            for ball in BALLS:
-                all_balls.append(ball)
+    for ball in BALLS:
+        all_balls.append(ball)
 
+    ran = rnd_values(screen_width, screen_height)
+    r_ball = Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
+    print("Ball created: "+ str(ran) )
+
+    ok=True
+    
+    for ball in all_balls:
+        if(check_collision(ball, r_ball)):
+            ok=False
+
+    if(ok):
+        BALLS.append(r_ball)
+    else:
+        while(ok != True):
             ran = rnd_values(screen_width, screen_height)
-            r_ball = Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
-            print("Ball created: "+ str(ran) )
+            r_ball.new_Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
 
-            ok=True
+            ok = True
+                
             for ball in all_balls:
                 if(check_collision(ball, r_ball)):
                     ok=False
 
-            if(ok):
-                BALLS.append(r_ball)
-            else:
-                while(ok != True):
-                    ran = rnd_values(screen_width, screen_height)
-                    r_ball.new_Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
-
-                    ok = True
+        BALLS.append(r_ball)
+                         
+while(running == True):
+    screen_width =(int)(turtle.getcanvas().winfo_width()/2)
+    screen_height = (int)(turtle.getcanvas().winfo_height()/2)
                 
-                    for ball in all_balls:
-                        if(check_collision(ball, r_ball)):
-                            ok=False
-
-                BALLS.append(r_ball)
+    movearound(screen_height, screen_width, my_ball)
+    move_all_balls(screen_width, screen_height, BALLS)
+    check_all_balls_collision(running, pressed, BALLS, my_ball, screen_width, screen_height)
+    time.sleep(0.1)
                 
-          
-        while(running == True):
-            screen_width =(int)(turtle.getcanvas().winfo_width()/2)
-            screen_height = (int)(turtle.getcanvas().winfo_height()/2)
-                
-            movearound(screen_height, screen_width, my_ball)
-            move_all_balls(screen_width, screen_height, BALLS)
-            check_all_balls_collision(running, pressed, BALLS, my_ball, screen_width, screen_height)
-            time.sleep(0.1)
-                
-        turtle.mainloop()
-'''
-    else:
-        button.write("REPLAY" , font=("fantasy",60,"normal"), align="center", color = "black")
-        button.onclick(pressed = True, running = True)
-'''
+turtle.mainloop()

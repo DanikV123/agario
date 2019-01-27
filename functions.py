@@ -2,11 +2,26 @@ import math, turtle, time
 from turtle import Turtle, Screen
 import random as rnd
 
+
 loss = turtle.Turtle()
 loss.penup()
 loss.hideturtle()
 loss.speed(100)
-loss.goto(0,300)
+loss.goto(0,150)
+
+replay = turtle.Turtle()
+replay.penup()
+replay.color('green')
+replay.hideturtle()
+replay.speed(100)
+replay.goto(-30,50)
+
+stop = turtle.Turtle()
+stop.penup()
+stop.color('red')
+stop.hideturtle()
+stop.speed(100)
+stop.goto(100,50)
 
 
 def rnd_color():
@@ -66,8 +81,8 @@ def check_collision(ball1, ball2):
     else:
         return(False)
 
-def check_all_balls_collision(running, pressed, BALLS, my_ball, screen_width, screen_height):
     
+def check_all_balls_collision(running, pressed, BALLS, my_ball, screen_width, screen_height):
     all_balls=[]
     all_balls.append(my_ball)
     
@@ -81,23 +96,39 @@ def check_all_balls_collision(running, pressed, BALLS, my_ball, screen_width, sc
                 r_b = ball_b.r
                 
                 ran = rnd_values(screen_width, screen_height)
+
+                sc = turtle.Screen()
+
+                #clicked = False 
                 
                 if(r_a > r_b):
                     if(ball_b == my_ball):
+                        sc.clear()
                         loss.write("YOU DIED" , font=("fantasy",60,"normal"), align="center")
-                        #return(False)
-                        time.sleep(5)
-                        quit()
+                        replay.write("REPLAY" , font=("fantasy",35,"normal"), align="right")
+                        stop.write("QUIT" , font=("fantasy",35,"normal"), align="left")
+                        
+                        '''
+                        while(clicked != True):
+                            stop.onclick()
+                        '''
+                        
                     ball_b.new_Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
                     ball_a.r = r_a + r_b/50
                     ball_a.shapesize(ball_a.r/10)
                     print(ball_a.r)
                 else:
                     if(ball_a == my_ball):
+                        sc.clear()
                         loss.write("YOU DIED" , font=("fantasy",60,"normal"), align="center")
-                        #return(False)
-                        time.sleep(5)
-                        quit()
+                        replay.write("REPLAY" , font=("fantasy",35,"normal"), align="right")
+                        stop.write("QUIT" , font=("fantasy",35,"normal"), align="left")
+                        
+                        '''
+                        while(clicked != True):
+                            #stop.onclick() 
+                        '''
+
                     ball_a.new_Ball(ran[0], ran[1], ran[2], ran[3], ran[4], ran[5])
                     ball_b.r = r_b + r_a/50
                     ball_b.shapesize(ball_b.r/10)
